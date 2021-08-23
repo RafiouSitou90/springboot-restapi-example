@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Table(name = "tab_posts")
-public class Post
+public class Post extends BaseEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,12 +49,6 @@ public class Post
     @ToString.Exclude
     private Category category;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     public boolean isPublished() {
         return null != publishedAt;
     }
@@ -66,13 +60,11 @@ public class Post
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
         computeSlug();
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = LocalDateTime.now();
         computeSlug();
     }
 }
